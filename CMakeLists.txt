@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 project(tetgen)
 
-option(BUILD_EXECUTABLE "Build tetgen executable" OFF)
+option(BUILD_EXECUTABLE "Build tetgen executable" ON)
 option(BUILD_LIBRARY    "Build libtetgen library" ON)
 
 if(BUILD_LIBRARY)
