@@ -76,3 +76,30 @@ Fixed the original code for using tetgenbehavior struct.
 ```bash
 g++ -o test tetcall.cxx -L./build/ -ltetgen
 ```
+
+# Examples (Using pytetgen)
+
+We need following packages to run these examples.
+
+* pybind11 
+
+```bash
+git submodule add -b stable ../../pybind/pybind11 extern/pybind11
+git submodule update --init
+```
+
+Run following command to build pytetgen.
+
+```bash
+pip install -e .
+```
+
+Note that -e flag should be used.
+
+* matplotlib (pip install matplotlib)
+
+## Delaunay Tetrahedralization of 3D mesh
+
+
+
+```bash
