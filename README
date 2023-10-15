@@ -34,11 +34,12 @@ cmake ..
 make
 ```
 
-# Examples
+# Examples (Using Tetgen Executable)
 
 Install following packages before running examples.
 
 * numpy (pip install numpy)
+* trimesh (pip install trimesh)
 
 ## Delaunay Tetrahedralization of random 3D points
 
@@ -60,3 +61,16 @@ build/tetgen -pq1.2ak _plane_in_box.poly
 ```
 
 See documentation for the details of the flags.
+
+# Examples (Using Tetgen Library)
+
+Note that we should bind [build/libtetgen.a].
+Therefore, we use "-L./build/" to specify linking directory.
+
+## Default Example from Tetgen
+
+Fixed the original code for using tetgenbehavior struct.
+
+```bash
+g++ -o test tetcall.cxx -L./build/ -ltetgen
+```
