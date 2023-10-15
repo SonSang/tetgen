@@ -1,3 +1,30 @@
+# Original README
+
+This is TetGen version 1.6.0 (released on August 31, 2020)
+
+Please see the documentation of TetGen for compiling and using TetGen.
+It is available at the following link:
+
+            http://www.tetgen.org
+
+For more information on this product, contact :
+
+  Hang Si
+  Research Group of Numerical Mathematics and Scientific Computing
+  Weierstrass Institute for Applied Analysis and Stochastics
+  Mohrenstr. 39
+  10117 Berlin, Germany
+
+ EMail: <si@wias-berlin.de>
+ Web Site: http://www.wias-berlin.de/~si
+
+------------------- IMPORTANCE NOTICE -----------------------------
+
+BEFORE INTALLING OR USING TetGen(R) READ the 
+GENERAL LICENSE TERMS AND CONDITIONS
+
+-------------------------------------------------------------------
+
 # Build
 
 See build options in CMake file. Then, run following commands.
@@ -19,7 +46,7 @@ Install following packages before running examples.
 ## Delaunay Tetrahedralization of random 3D points
 
 ```bash
-python _random_points.py
+python examples/exectuable_based/_random_points.py
 build/tetgen random_points.node
 ```
 
@@ -31,7 +58,7 @@ In this example, there is a small plane floating inside a unit cube.
 We generate quality tetrahedra that conforms to the given PLC.
 
 ```bash
-python _plane_in_box.py
+python examples/exectuable_based/_plane_in_box.py
 build/tetgen -pq1.2ak _plane_in_box.poly
 ```
 
