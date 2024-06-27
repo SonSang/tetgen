@@ -27,6 +27,12 @@ GENERAL LICENSE TERMS AND CONDITIONS
 
 # Build
 
+First, clone this repository recursively.
+
+```bash
+git clone https://github.com/SonSang/tetgen.git --recursive
+```
+
 See build options in CMake file. Then, run following commands.
 
 ```bash
