@@ -23,7 +23,20 @@ if args.mesh is None:
     print("No mesh input, generating a sphere.")
     mesh = trimesh.creation.icosphere(subdivision=1)
 else:
-    mesh = trimesh.load(args.mesh)
+    mesh = trimesh.load_mesh(args.mesh, "stl")
+
+# normalize mesh;
+mesh_verts = mesh.vertices
+mesh_center = mesh_verts.mean(axis=0)
+mesh_verts -= mesh_center
+mesh_scale = np.max(np.linalg.norm(mesh_verts, axis=1))
+mesh_verts /= mesh_scale
+
+mesh_faces = mesh.faces
+mesh = trimesh.Trimesh(mesh_verts, mesh_faces)
+
+# save input mesh;
+mesh.export(f"{logdir}/in_mesh.obj")
 
 # get the bounding box;
 min_bound = mesh.bounds[0]
@@ -31,8 +44,8 @@ max_bound = mesh.bounds[1]
 
 # define a box that contains the mesh;
 box = trimesh.creation.box(
-    extents=(max_bound - min_bound) * 1.1,
-    transform=trimesh.transformations.translation_matrix((min_bound + max_bound) * 0.5)
+    extents=np.array([2., 2., 2.]),
+    # transform=trimesh.transformations.translation_matrix((min_bound + max_bound) * 0.5)
 )
 
 # define entire mesh;
@@ -55,9 +68,12 @@ in_mesh.set_facetmarkerlist(faces_marker)
 out_mesh = pytetgen.tetgenio()
 
 # call tetrahedralize;
-command = "pq1.414a0.1"
+command = "p"
 if args.quiet:
     command += "Q"
+else:
+    command += "V"
+command += "O0/0"       # no optimization
 b = pytetgen.tetgenbehavior()
 b.parse_commandline(command)
 pytetgen.tetrahedralize(b, in_mesh, out_mesh)
@@ -87,8 +103,17 @@ u_out_faces, u_out_faces_counts = np.unique(out_faces[:, [0, 1, 2]], return_coun
 u_out_faces_counts_cumsum = np.cumsum(u_out_faces_counts)
 out_faces, out_faces_marker = out_faces[u_out_faces_counts_cumsum - 1][:, [0, 1, 2]], out_faces[u_out_faces_counts_cumsum - 1][:, 3]
 
+out_tetmesh = trimesh.Trimesh(out_verts, out_faces)
+out_tetmesh.export(f"{logdir}/out_tetmesh.obj")
+
+out_boundary_faces_on_surface = out_boundary_faces[out_boundary_face_markers == 2]
+out_surfmesh = trimesh.Trimesh(out_verts, out_boundary_faces_on_surface)
+out_surfmesh.export(f"{logdir}/out_surfmesh.obj")
+
+print("Tetrahedralization done.")
 
 
+'''
 # render the output;
 out_trimesh = trimesh.Trimesh(out_verts, out_faces)
 sweep_start = min_bound
@@ -135,3 +160,4 @@ for i in range(sweep_count):
         plt.plot([line_start_x, line_end_x], [line_start_y, line_end_y], color=color, linewidth=1.0)
     plt.savefig(f"{logdir}/cross_section_{i}.png", dpi=300)
     plt.close()
+'''
